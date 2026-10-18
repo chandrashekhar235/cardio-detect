@@ -1,0 +1,428 @@
+@import "tailwindcss";
+
+@theme {
+  --font-display: 'Space Grotesk', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+}
+
+/* ==========================================================================
+   CARDIODETECT COLOR & DESIGN TOKENS
+   Calm, authoritative medical-tech aesthetic with blueprint grids & glassmorphism
+   ========================================================================== */
+
+:root {
+  /* Light Theme (Clinical, clean, high-contrast) */
+  --bg-canvas: #F8FAFD;
+  --bg-surface: #FFFFFF;
+  --bg-surface-glass: rgba(255, 255, 255, 0.88);
+  --bg-elevated: #EEF3FA;
+  --bg-subtle: #F1F5F9;
+
+  --text-main: #0B132B;
+  --text-secondary: #475569;
+  --text-muted: #64748B;
+
+  /* WCAG AA verified accents for light background (4.5:1+ contrast) */
+  --accent-cyan: #007D8F;
+  --accent-cyan-subtle: rgba(0, 125, 143, 0.08);
+
+  --medical-green: #0E7B50;
+  --medical-green-subtle: rgba(14, 123, 80, 0.08);
+
+  --coral-red: #D9253E;
+  --coral-red-hover: #B51B30;
+  --coral-red-subtle: rgba(217, 37, 62, 0.08);
+
+  --border-subtle: #E2E8F0;
+  --border-glass: rgba(15, 23, 42, 0.08);
+  --border-hover: #CBD5E1;
+  --border-strong: #94A3B8;
+
+  --blueprint-grid: rgba(15, 23, 42, 0.035);
+  --blueprint-grid-fine: rgba(15, 23, 42, 0.015);
+
+  --card-shadow: 0 1px 3px 0 rgba(11, 19, 43, 0.04), 0 1px 2px -1px rgba(11, 19, 43, 0.02);
+  --card-shadow-hover: 0 12px 28px -5px rgba(11, 19, 43, 0.08), 0 8px 10px -6px rgba(11, 19, 43, 0.04);
+  --card-shadow-glass: 0 8px 32px 0 rgba(11, 19, 43, 0.06);
+}
+
+html.dark {
+  /* Dark Theme (Default: deep near-black navy canvas with subtle cyan glow) */
+  --bg-canvas: #070B14;
+  --bg-surface: #0E1626;
+  --bg-surface-glass: rgba(14, 22, 38, 0.74);
+  --bg-elevated: #152238;
+  --bg-subtle: #1C2B47;
+
+  --text-main: #F1F5F9;
+  --text-secondary: #94A3B8;
+  --text-muted: #64748B;
+
+  /* Accents */
+  --accent-cyan: #45D9E8;
+  --accent-cyan-subtle: rgba(69, 217, 232, 0.12);
+
+  --medical-green: #48D597;
+  --medical-green-subtle: rgba(72, 213, 151, 0.12);
+
+  --coral-red: #FF5267;
+  --coral-red-hover: #FF7082;
+  --coral-red-subtle: rgba(255, 82, 103, 0.12);
+
+  --border-subtle: rgba(255, 255, 255, 0.08);
+  --border-glass: rgba(69, 217, 232, 0.14);
+  --border-hover: rgba(69, 217, 232, 0.28);
+  --border-strong: #334B70;
+
+  --blueprint-grid: rgba(69, 217, 232, 0.045);
+  --blueprint-grid-fine: rgba(69, 217, 232, 0.02);
+
+  --card-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.5), 0 2px 6px -1px rgba(0, 0, 0, 0.4);
+  --card-shadow-hover: 0 12px 30px -4px rgba(0, 0, 0, 0.7), 0 4px 12px -2px rgba(0, 0, 0, 0.5);
+  --card-shadow-glass: 0 8px 32px 0 rgba(0, 0, 0, 0.5);
+}
+
+/* ==========================================================================
+   BASE STYLES (Layered so utilities take precedence)
+   ========================================================================== */
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    transition: background-color 0.25s ease, color 0.25s ease;
+  }
+
+  body {
+    background-color: var(--bg-canvas);
+    color: var(--text-main);
+    font-family: var(--font-sans);
+    min-height: 100vh;
+    line-height: 1.6;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  ::selection {
+    background-color: rgba(69, 217, 232, 0.25);
+    color: var(--text-main);
+  }
+
+  /* Typography Hierarchy */
+  h1, h2, h3, h4, h5, h6, .font-display {
+    font-family: var(--font-display);
+    letter-spacing: -0.03em;
+    font-weight: 600;
+    color: var(--text-main);
+  }
+
+  .font-mono-code {
+    font-family: var(--font-mono);
+  }
+
+  /* Keyboard accessibility outline */
+  :focus-visible {
+    outline: 2px solid var(--accent-cyan);
+    outline-offset: 2px;
+  }
+
+  /* Range input base styling */
+  input[type="range"] {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 100%;
+    height: 6px;
+    background: var(--bg-elevated);
+    border: 1px solid var(--border-subtle);
+    border-radius: 4px;
+    outline: none;
+  }
+
+  input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: var(--coral-red);
+    border: 2px solid var(--bg-surface);
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+    cursor: pointer;
+    transition: transform 0.1s ease;
+  }
+
+  input[type="range"]::-webkit-slider-thumb:hover {
+    transform: scale(1.18);
+  }
+}
+
+/* ==========================================================================
+   COMPONENT STYLES (Layered so Tailwind utility classes like p-*, m-*, etc. WIN)
+   ========================================================================== */
+
+@layer components {
+  /* Fluid Layout Scales (Fixing "cramped & centered") */
+  .site-container-wide {
+    width: 100%;
+    max-width: 1440px;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: clamp(1rem, 3.5vw, 3rem);
+    padding-right: clamp(1rem, 3.5vw, 3rem);
+  }
+
+  .site-container {
+    width: 100%;
+    max-width: 1240px;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: clamp(1rem, 3.5vw, 2.5rem);
+    padding-right: clamp(1rem, 3.5vw, 2.5rem);
+  }
+
+  .site-container-narrow {
+    width: 100%;
+    max-width: 920px;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: clamp(1rem, 3.5vw, 2rem);
+    padding-right: clamp(1rem, 3.5vw, 2rem);
+  }
+
+  /* Blueprint Grid Canvas & Tick Borders */
+  .blueprint-grid-canvas {
+    background-size: 40px 40px, 8px 8px;
+    background-image: 
+      linear-gradient(to right, var(--blueprint-grid) 1px, transparent 1px),
+      linear-gradient(to bottom, var(--blueprint-grid) 1px, transparent 1px),
+      linear-gradient(to right, var(--blueprint-grid-fine) 1px, transparent 1px),
+      linear-gradient(to bottom, var(--blueprint-grid-fine) 1px, transparent 1px);
+  }
+
+  .blueprint-ticks-x {
+    background-image: radial-gradient(var(--border-strong) 1px, transparent 0);
+    background-size: 16px 100%;
+  }
+
+  .frosted-glass {
+    background-color: var(--bg-surface-glass);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid var(--border-glass);
+  }
+
+  .product-card {
+    background-color: var(--bg-surface);
+    border: 1px solid var(--border-subtle);
+    border-radius: 16px;
+    padding: clamp(1.25rem, 2.5vw, 2rem);
+    box-shadow: var(--card-shadow);
+    transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.2s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.2s ease;
+  }
+
+  .product-card-glass {
+    background-color: var(--bg-surface-glass);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid var(--border-glass);
+    border-radius: 16px;
+    padding: clamp(1.25rem, 2.5vw, 2rem);
+    box-shadow: var(--card-shadow-glass);
+    transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.2s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.2s ease;
+  }
+
+  .product-card-glass:hover,
+  .product-card:hover {
+    border-color: var(--border-hover);
+    box-shadow: var(--card-shadow-hover);
+  }
+
+  /* Glow utilities */
+  .glow-cyan {
+    box-shadow: 0 0 25px -4px var(--accent-cyan-subtle);
+  }
+
+  .glow-coral {
+    box-shadow: 0 0 25px -4px var(--coral-red-subtle);
+  }
+
+  .glow-green {
+    box-shadow: 0 0 25px -4px var(--medical-green-subtle);
+  }
+
+  /* Buttons */
+  .btn-primary {
+    background-color: var(--coral-red);
+    color: #FFFFFF !important;
+    font-family: var(--font-sans);
+    font-weight: 500;
+    font-size: 0.9rem;
+    padding: 10px 22px;
+    border-radius: 9px;
+    border: 1px solid transparent;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    cursor: pointer;
+    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    text-decoration: none !important;
+  }
+
+  .btn-primary:hover {
+    background-color: var(--coral-red-hover);
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px var(--coral-red-subtle);
+  }
+
+  .btn-primary:active {
+    transform: translateY(0);
+  }
+
+  .btn-secondary {
+    background-color: var(--bg-surface-glass);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    color: var(--text-main) !important;
+    font-family: var(--font-sans);
+    font-weight: 500;
+    font-size: 0.9rem;
+    padding: 10px 20px;
+    border-radius: 9px;
+    border: 1px solid var(--border-subtle);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    cursor: pointer;
+    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    text-decoration: none !important;
+  }
+
+  .btn-secondary:hover {
+    background-color: var(--bg-elevated);
+    border-color: var(--border-hover);
+    transform: translateY(-1px);
+  }
+
+  .btn-secondary:active {
+    transform: translateY(0);
+  }
+
+  .theme-toggle-btn {
+    background-color: var(--bg-surface-glass);
+    border: 1px solid var(--border-subtle);
+    color: var(--text-secondary);
+    width: 36px;
+    height: 36px;
+    border-radius: 9px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .theme-toggle-btn:hover {
+    color: var(--text-main);
+    background-color: var(--bg-elevated);
+    border-color: var(--border-hover);
+  }
+
+  /* Form Controls */
+  .form-input {
+    width: 100%;
+    background-color: var(--bg-surface);
+    border: 1px solid var(--border-subtle);
+    border-radius: 9px;
+    color: var(--text-main);
+    padding: 10px 14px;
+    font-size: 0.92rem;
+    outline: none;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease, background-color 0.2s ease;
+  }
+
+  .form-input:focus {
+    border-color: var(--accent-cyan);
+    box-shadow: 0 0 0 3px var(--accent-cyan-subtle);
+  }
+
+  .form-select {
+    width: 100%;
+    background-color: var(--bg-surface);
+    border: 1px solid var(--border-subtle);
+    border-radius: 9px;
+    color: var(--text-main);
+    padding: 10px 14px;
+    font-size: 0.92rem;
+    outline: none;
+    cursor: pointer;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+  }
+
+  .form-select:focus {
+    border-color: var(--accent-cyan);
+    box-shadow: 0 0 0 3px var(--accent-cyan-subtle);
+  }
+
+  .input-unit-badge {
+    font-size: 0.72rem;
+    font-family: var(--font-mono);
+    font-weight: 500;
+    color: var(--text-muted);
+    background-color: var(--bg-elevated);
+    border: 1px solid var(--border-subtle);
+    padding: 2px 7px;
+    border-radius: 5px;
+  }
+}
+
+/* ==========================================================================
+   SCROLLBAR & UTILITY ENHANCEMENTS
+   ========================================================================== */
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 7px;
+  height: 7px;
+}
+::-webkit-scrollbar-track {
+  background: var(--bg-canvas);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--border-hover);
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--text-muted);
+}
+
+/* Print Styles */
+@media print {
+  body {
+    background: #FFFFFF !important;
+    color: #000000 !important;
+  }
+  .no-print {
+    display: none !important;
+  }
+  .print-only {
+    display: block !important;
+  }
+  .product-card, .product-card-glass {
+    box-shadow: none !important;
+    border: 1px solid #D0D0D0 !important;
+    page-break-inside: avoid;
+  }
+}
+
+/* Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
