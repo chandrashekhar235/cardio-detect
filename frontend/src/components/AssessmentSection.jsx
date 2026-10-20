@@ -192,7 +192,7 @@ export default function AssessmentSection({ onCaseLogged }) {
         };
         setReport(caseRecord);
         if (onCaseLogged) {
-          onCaseLogged(caseRecord);
+          onCaseLogged(caseRecord); 
         }
         setLoading(false);
 
