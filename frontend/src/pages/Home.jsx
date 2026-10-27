@@ -70,7 +70,7 @@ export default function Home() {
                 <span className="w-2 h-2 rounded-full bg-[var(--accent-cyan)] animate-pulse" />
                 <span className="font-semibold uppercase tracking-wider">Clinical Machine Learning</span>
                 <span className="text-[var(--text-muted)]">•</span>
-                <span className="text-[var(--text-secondary)]">k=5 Nearest Neighbors</span>
+                <span className="text-[var(--text-secondary)]">k=5 Nearest Neighbor</span>
               </motion.div>
 
               <motion.h1
